@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Tommy;
-using System.Reflection;
-using System.IO;
 
-namespace ThunderstoreCLI
+namespace ThunderstoreCLI.Util
 {
 
     // Tommy has it's TomlSyntax class marked as internal, so duplicate code

@@ -101,7 +101,7 @@ namespace ThunderstoreCLI.Config
             return new AuthConfig()
             {
                 DefaultToken = options.Token,
-                UseSessionAuth = options.UseSessionAuth
+                Type = options.UseSessionAuth ? AuthConfig.AuthType.Session : AuthConfig.AuthType.Bearer
             };
         }
     }

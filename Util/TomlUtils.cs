@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using ThunderstoreCLI.Config;
 using Tommy;
 
-namespace ThunderstoreCLI
+namespace ThunderstoreCLI.Util
 {
     public static class TomlUtils
     {

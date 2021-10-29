@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Text;
+using ThunderstoreCLI.API;
 
 namespace ThunderstoreCLI.Config
 {
@@ -13,6 +14,7 @@ namespace ThunderstoreCLI.Config
         public BuildConfig BuildConfig { get; private set; }
         public PublishConfig PublishConfig { get; private set; }
         public AuthConfig AuthConfig { get; private set; }
+        public ApiHelper Api { get; private set; }
 
         private Config(GeneralConfig generalConfig, PackageMeta packageMeta, BuildConfig buildConfig, PublishConfig publishConfig, AuthConfig authConfig)
         {
@@ -63,11 +65,6 @@ namespace ThunderstoreCLI.Config
             return Path.GetFullPath(Path.Join(GetBuildOutputDir(), $"{GetPackageId()}.zip"));
         }
 
-        public AuthenticationHeaderValue GetAuthHeader()
-        {
-            return new AuthenticationHeaderValue(AuthConfig.UseSessionAuth ?? false ? "Session" : "Bearer", AuthConfig.DefaultToken);
-        }
-
         public static Config Parse(params IConfigProvider[] configProviders)
         {
             var generalConfig = new GeneralConfig();
@@ -85,6 +82,9 @@ namespace ThunderstoreCLI.Config
                 Merge(publishConfig, provider.GetPublishConfig(), false);
                 Merge(authConfig, provider.GetAuthConfig(), false);
             }
+
+            result.Api = new ApiHelper(result);
+            
             return result;
         }
 
@@ -154,8 +154,14 @@ namespace ThunderstoreCLI.Config
 
     public class AuthConfig
     {
+        public enum AuthType
+        {
+            Bearer,
+            Session
+        }
+        
         public string DefaultToken { get; set; }
         public Dictionary<string, string> AuthorTokens { get; set; }
-        public bool? UseSessionAuth { get; set; }
+        public AuthType? Type { get; set; }
     }
 }
